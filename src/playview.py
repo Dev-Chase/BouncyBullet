@@ -41,7 +41,7 @@ class PlayView(arcade.View):
         self.hud_camera.update()
 
         # Clearing the View
-        window.clear()
+        self.clear()
 
         # Uncomment the following line when you implement the HUD
         # self.hud_camera.use()
@@ -55,7 +55,7 @@ class PlayView(arcade.View):
 
         # Updating the Sprite Camera to Center the Player
         self.sprite_camera.move_to(
-            Vec2(self.player.center_x - window.width // 2, self.player.center_y - window.height // 2), CAMERA_SPEED)
+            Vec2(self.player.center_x - window.width // 2, self.player.center_y - window.height // 2), PLAYER_CAMERA_SPEED)
         self.sprite_camera.update()
         self.sprite_camera.use()
 

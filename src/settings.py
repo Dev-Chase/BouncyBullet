@@ -2,7 +2,10 @@ W = 1000
 H = 800
 FPS = 60
 PLAYER_SPEED = 4
-CAMERA_SPEED = .05
+PLAYER_CAMERA_SPEED = .05
+MENU_CAMERA_SPEED = 10
+WORLD_WIDTH = 3250
+WORLD_HEIGHT = 1350
 
 # import math
 # def get_distance(fr, to):
@@ -15,7 +18,7 @@ game_state_dict = {
 }
 
 rev_game_state_dict = {
-    0: ["menu", ""],
+    0: ["menu", "dt"],
     1: ["setup", ""],
     2: ["play", "dt"]
 }

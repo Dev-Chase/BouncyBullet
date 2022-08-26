@@ -33,7 +33,7 @@ class World(arcade.Window):
         self.menu_view = MenuView(self)
 
         # Setting up the Menu View
-        self.menu_view.setup("Press Space or Click to Start")
+        self.menu_view.setup("Press Space or Click to Start", Vec2(0, 0))
         # self.play_view.setup(Vec2(self.width, self.height))
 
         # Showing the Menu View
@@ -45,10 +45,10 @@ class World(arcade.Window):
         arcade.start_render()
 
     # Creating a function to run everytime the Game State is Menu
-    def update_menu(self):
+    def update_menu(self, dt):
 
         # Updating the Background of the Menu View
-        self.menu_view.update_background(self)
+        self.menu_view.update_background(dt)
 
         # Drawing the Menu View
         self.menu_view.draw_background(self)
@@ -74,7 +74,8 @@ class World(arcade.Window):
     # Creating a function to run when the Game State is Play
     def update_play(self, dt):
         if self.keyboard[key.F]:
-            self.menu_view.setup("Press Space or Click to Restart")
+            self.clear()
+            self.menu_view.setup("Press Space or Click to Restart", Vec2(0, 0))
             self.show_view(self.menu_view)
             return 0
 
