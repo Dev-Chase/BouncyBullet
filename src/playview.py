@@ -3,6 +3,8 @@ import arcade
 from src.player import Player
 from pyglet.math import Vec2
 
+PAUSE_BTN = arcade.load_texture("./assets/pause_button.png")
+
 
 class PlayView(arcade.View):
     def __init__(self, window):
@@ -44,8 +46,12 @@ class PlayView(arcade.View):
         self.clear()
 
         # Uncomment the following line when you implement the HUD
-        # self.hud_camera.use()
+        self.hud_camera.use()
+
         # Drawing the HUD goes here
+        arcade.draw_texture_rectangle(PAUSE_BTN.width//2, window.height-PAUSE_BTN.height//2,
+                                      PAUSE_BTN.width, PAUSE_BTN.height,
+                                      PAUSE_BTN)
 
         # Using the Sprites Camera to Draw all the Sprites
         self.sprite_camera.use()
@@ -55,7 +61,8 @@ class PlayView(arcade.View):
 
         # Updating the Sprite Camera to Center the Player
         self.sprite_camera.move_to(
-            Vec2(self.player.center_x - window.width // 2, self.player.center_y - window.height // 2), PLAYER_CAMERA_SPEED)
+            Vec2(self.player.center_x - window.width // 2, self.player.center_y - window.height // 2),
+            PLAYER_CAMERA_SPEED)
         self.sprite_camera.update()
         self.sprite_camera.use()
 

@@ -7,7 +7,6 @@ from src.playview import PlayView
 from src.menuview import MenuView
 
 
-# TODO: Separate Cameras into MenuView
 # TODO: Make overlapping pause screen
 # TODO: Add Art for Player and Shield
 # TODO: Add Art for Walls and Background
@@ -87,7 +86,8 @@ class World(arcade.Window):
     # Creating a function to run every frame
     def on_update(self, dt):
         # Updating the Game State
-        self.game_state = eval(f"self.update_{rev_game_state_dict[self.game_state][0]}({rev_game_state_dict[self.game_state][1]})")
+        self.game_state = eval(
+            f"self.update_{rev_game_state_dict[self.game_state][0]}({rev_game_state_dict[self.game_state][1]})")
 
     # Changing the Coordinates of the Mouse Position every time the Cursor Moves
     def on_mouse_motion(self, x: int, y: int, dx: int, dy: int):

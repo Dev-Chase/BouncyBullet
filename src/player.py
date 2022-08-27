@@ -64,7 +64,6 @@ class Player(arcade.Sprite):
                 move_x = 0
                 move_y = 0
 
-                # TODO: do individual checks to see if the shield is on either side of player body
                 # Changing the Direction the Player should Move to get away from the Wall
                 if abs(self.shield.bottom - wall.top) < min(
                         [abs(self.shield.top - wall.bottom), abs(self.shield.right - wall.left),
