@@ -51,7 +51,20 @@ class MenuView(arcade.View):
                         self.bg_animation_points[self.bg_animation_i],
                         MENU_CAMERA_SPEED-self.bg_animation_elapsed_time)
 
-    def update_background(self, dt):
+    def update_background(self, window, dt):
+        # Resizing the Cameras to Fit the Window
+        self.bg_camera.resize(window.width, window.height)
+        self.fg_camera.resize(window.width, window.height)
+
+        # Updating the Cameras
+        self.bg_camera.update()
+        self.fg_camera.update()
+
+        # Updating the Animation Points
+        self.bg_animation_points[0] = Vec2(-(MENU_WIDTH // 2), MENU_HEIGHT // 2 - window.height)
+        self.bg_animation_points[1] = Vec2(MENU_WIDTH // 2 - window.width, MENU_HEIGHT // 2 - window.height)
+        self.bg_animation_points[3] = Vec2(MENU_WIDTH // 2 - window.width, -(MENU_HEIGHT // 2))
+
         # Clearing the Window
         self.clear()
 
@@ -101,19 +114,6 @@ class MenuView(arcade.View):
                          anchor_x="center", anchor_y="center")
 
     def on_resize(self, width, height):
-        # Resizing the Cameras to Fit the Window
-        self.bg_camera.resize(width, height)
-        self.fg_camera.resize(width, height)
-
-        # Updating the Cameras
-        self.bg_camera.update()
-        self.fg_camera.update()
-
-        # Updating the Animation Points
-        self.bg_animation_points[0] = Vec2(-(MENU_WIDTH//2), MENU_HEIGHT//2-height)
-        self.bg_animation_points[1] = Vec2(MENU_WIDTH//2-width, MENU_HEIGHT//2-height)
-        self.bg_animation_points[3] = Vec2(MENU_WIDTH//2-width, -(MENU_HEIGHT//2))
-
         #  Updating the Background Animation
         self.set_target(self.bg_animation_start_position, self.bg_animation_points[self.bg_animation_i],
                         MENU_CAMERA_SPEED - self.bg_animation_elapsed_time)

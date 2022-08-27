@@ -7,10 +7,8 @@ from src.playview import PlayView
 from src.menuview import MenuView
 
 
-# TODO: Make overlapping pause screen
 # TODO: Add Art for Player and Shield
 # TODO: Add Art for Walls and Background
-# TODO: Use Lerp to Move Menu Background around World Background
 # TODO: Set fixed world size and borders
 # TODO: Add procedural Generation Eventually
 class World(arcade.Window):
@@ -47,7 +45,7 @@ class World(arcade.Window):
     def update_menu(self, dt):
 
         # Updating the Background of the Menu View
-        self.menu_view.update_background(dt)
+        self.menu_view.update_background(self, dt)
 
         # Drawing the Menu View
         self.menu_view.draw_background(self)
@@ -78,8 +76,12 @@ class World(arcade.Window):
             self.show_view(self.menu_view)
             return 0
 
-        self.play_view.update_play(self.keyboard, self.mouse_pos, self, dt)
-        self.play_view.draw()
+        if not self.play_view.is_paused:
+            self.play_view.update_play(self, dt)
+            self.play_view.draw(self)
+        else:
+            self.play_view.draw(self)
+            self.play_view.update_pause_menu(self)
 
         return game_state_dict['play']
 
@@ -102,3 +104,8 @@ class World(arcade.Window):
         
     def on_mouse_enter(self, x: int, y: int):
         self.mouse_pos = Vec2(x, y)
+
+    # Reacting to Mouse Press
+    def on_mouse_press(self, x: int, y: int, button: int, modifiers: int):
+        if self.game_state == game_state_dict['play']:
+            self.play_view.on_left_mouse_press(x, y, self)
