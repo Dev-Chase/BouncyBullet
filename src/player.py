@@ -1,23 +1,36 @@
 from src.settings import *
 import arcade
-from src.shield import Shield
-from math import atan2, degrees, radians, sin, cos
 from pyglet.math import Vec2
 from pyglet.window import key
+from math import atan2, degrees, radians, sin, cos
+
+from src.shield import Shield
 
 
 class Player(arcade.Sprite):
     def __init__(self, pos=Vec2(0, 0)):
-        self.list = arcade.SpriteList(capacity=2)
         super().__init__("./assets/player.png", center_x=pos.x, center_y=pos.y)
-        self.list.append(self)
+
+        # Initializing the Player Shield Sprite
         self.shield = Shield(Vec2(pos.x, pos.y+self.height//2+15))
+
+        # Creating a Sprite List to Hold the Player and Shield Sprites
+        self.list = arcade.SpriteList(capacity=2)
+
+        # Adding the Player and Shield Sprites to the Sprite List
+        self.list.append(self)
         self.list.append(self.shield)
+
+        # Creating an Attribute to tell How Far the Shield Center is from the Body Center for Rotation
         self.distance_from_center = self.shield.center_y-self.center_y
 
-    def update(self, keyboard, mouse_pos, window_size, walls, dt):
-        self.change_x = ((keyboard[key.RIGHT] or keyboard[key.D])-(keyboard[key.LEFT] or keyboard[key.A]))*PLAYER_SPEED
-        self.change_y = ((keyboard[key.UP] or keyboard[key.W])-(keyboard[key.DOWN] or keyboard[key.S]))*PLAYER_SPEED
+    # Creating a Function to Run Every Frame
+    def update(self, window, walls, dt):
+        # Setting the Play Velocity Attributes
+        self.change_x = ((window.keyboard[key.RIGHT] or window.keyboard[key.D]) - (
+                    window.keyboard[key.LEFT] or window.keyboard[key.A])) * PLAYER_SPEED
+        self.change_y = ((window.keyboard[key.UP] or window.keyboard[key.W]) - (
+                    window.keyboard[key.DOWN] or window.keyboard[key.S])) * PLAYER_SPEED
 
         # Applying Vertical Movement
         self.move(0, self.change_y, dt)
@@ -48,12 +61,15 @@ class Player(arcade.Sprite):
                 self.right = wall.left
             self.change_x = 0
             self.shield.move(-moved, 0, 1 / FPS)
-            
-        offs_y = ((self.center_y - (self.center_y-window_size.y//2)) - mouse_pos.y)
-        offs_x = ((self.center_x - (self.center_x-window_size.x//2)) - mouse_pos.x)
+
+        # Finding out How much the Shield should Rotate Based on the Mouse Position
+        offs_y = ((self.center_y - (self.center_y-window.height//2)) - window.mouse_pos.y)
+        offs_x = ((self.center_x - (self.center_x-window.width//2)) - window.mouse_pos.x)
+
+        # Applying the Rotation
         self.shield.angle = -1 * degrees(atan2(offs_x, offs_y))
 
-        # Moving the Shield Center Along with the Rotation
+        # Moving the Shield Center Along with the Rotation so that the Shield Rotates around the Player
         self.shield.center_y = (self.center_y + cos(radians(-1 * self.shield.angle)) * self.distance_from_center)
         self.shield.center_x = (self.center_x + sin(radians(-1 * self.shield.angle)) * self.distance_from_center)
 
@@ -84,8 +100,8 @@ class Player(arcade.Sprite):
                 while arcade.check_for_collision(wall, self.shield):
                     self.move(move_x, move_y, dt)
                     self.shield.move(move_x, move_y, dt)
-        # print(self.shield.get_adjusted_hit_box())
 
+    # Creating a Utility Function to Move the Player Based on the Velocities Given
     def move(self, vel_x, vel_y, dt):
         self.center_x += vel_x*dt*FPS
         self.center_y += vel_y*dt*FPS

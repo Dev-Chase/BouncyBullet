@@ -2,14 +2,16 @@ W = 1000
 H = 800
 FPS = 60
 PLAYER_SPEED = 4
+BULLET_SPEED = 14
 PLAYER_CAMERA_SPEED = .05
 MENU_CAMERA_SPEED = 10
 WORLD_WIDTH = 6000
 WORLD_HEIGHT = 4000
 
-# import math
-# def get_distance(fr, to):
-#     return math.sqrt(math.pow(fr.x-to.x, 2)+math.pow(to.y-fr.y, 2))
+
+def avg(a, b):
+    return (a[0] + b[0]) / 2, (a[1] + b[1]) / 2
+
 
 game_state_dict = {
     "menu": 0,
